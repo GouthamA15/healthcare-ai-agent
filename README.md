@@ -2,7 +2,6 @@
 
 🚀 **An AI-powered personal health assistant** designed to help users monitor medications, track fitness data, retrieve reliable medical information, and generate simple health insights.
 
-> 📌 This project was developed as part of the **Agentic AI Program by Capabl AI**, where the objective is to build functional AI agents capable of solving real-world problems using modern agent frameworks such as **LangChain** and **LangGraph**.
 
 ---
 
