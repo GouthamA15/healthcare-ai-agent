@@ -12,6 +12,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+test.py
 
 # ==============================
 # Environment Variables / Secrets
