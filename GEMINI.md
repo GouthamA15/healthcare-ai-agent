@@ -47,6 +47,7 @@ This is a **Healthcare Monitoring AI Agent** designed to provide a digital healt
 ## Development Conventions
 
 ### Coding Standards
+- **Clean Code Policy:** NO comments (#) or docstrings (""") are allowed in source files. All code must be self-explanatory and minimal.
 - **Surgical Tool Usage:** When using tool-calling with Groq, the agent uses a manual loop in `invoke()` to ensure robustness against parsing errors.
 - **Safety First:** A strict **Emergency Protocol** is implemented in the `SimpleHealthAgent` system prompt. Any mention of life-threatening symptoms must trigger an immediate emergency warning before any tool use.
 - **Disclaimer:** All AI responses must include a medical disclaimer.
@@ -69,3 +70,4 @@ This is a **Healthcare Monitoring AI Agent** designed to provide a digital healt
 ## Contextual Warnings
 - **Groq Tool Parsing:** Be aware that Groq sometimes attempts to call tools using an internal XML-like format. The `health_agent.py` is configured to handle the standard tool-calling protocol.
 - **Python Version:** The project is running on Python 3.13. Ensure all library installations are compatible (use `python -m pip`).
+- **State Persistence:** The current agent implementation is stateless for simplicity. Session history is managed by the UI layer (Streamlit).
