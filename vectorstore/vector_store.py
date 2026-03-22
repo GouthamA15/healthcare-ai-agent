@@ -69,8 +69,6 @@ def create_vector_store():
         persist_directory=CHROMA_PATH
     )
 
-    vectordb.persist()
-
     print("Vector database created successfully")
     print(f"Loaded {len(documents)} documents")
     print(f"Created {len(chunks)} chunks")
