@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
-from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
+from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage, AIMessage
 
 from tools.fitness_tool import calculate_bmi, calculate_bmr, fitness_tool
 from tools.medical_tool import medical_info_tool
@@ -33,13 +33,19 @@ class SimpleHealthAgent:
             "You are a helpful AI Health Assistant.\n"
             "- If a user has a medical emergency, tell them to call 911 immediately.\n"
             "- ALWAYS use the provided tools to answer questions when applicable.\n"
-            "- When a tool returns information, you MUST include that information in your final answer to the user.\n"
+            "- Use the conversation history to provide context-aware answers.\n"
+            "- Format health metrics (BMI, BMR) in Markdown tables for clarity.\n"
+            "- When a tool returns information, include it in your final response.\n"
             "- ALWAYS include a medical disclaimer at the end of your response."
         )
 
     def invoke(self, input_data):
         user_input = input_data["input"]
-        messages = [SystemMessage(content=self.system_prompt), HumanMessage(content=user_input)]
+        history = input_data.get("history", [])
+        
+        messages = [SystemMessage(content=self.system_prompt)]
+        messages.extend(history[-10:])
+        messages.append(HumanMessage(content=user_input))
         
         for _ in range(5):
             ai_msg = self.llm_with_tools.invoke(messages)

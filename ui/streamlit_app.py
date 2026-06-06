@@ -1,6 +1,7 @@
 import streamlit as st
 import sys
 import os
+from langchain_core.messages import HumanMessage, AIMessage
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -35,12 +36,16 @@ with st.sidebar:
     st.divider()
     if st.button("Clear Chat"):
         st.session_state.messages = []
+        st.session_state.langchain_history = []
         st.rerun()
         
     st.info("I am an AI, not a doctor. Please consult a healthcare professional for medical advice.")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
+if "langchain_history" not in st.session_state:
+    st.session_state.langchain_history = []
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -62,14 +67,20 @@ if prompt := st.chat_input("How can I help you today?"):
             enhanced_input = f"I am a {age} year old {gender}, weight {weight}kg, height {height}cm. {prompt}"
             
             with st.spinner("Thinking..."):
-                response = st.session_state.agent_executor.invoke({"input": enhanced_input})
+                response = st.session_state.agent_executor.invoke({
+                    "input": enhanced_input,
+                    "history": st.session_state.langchain_history
+                })
                 full_response = response["output"]
             
             message_placeholder.markdown(full_response)
+            
             st.session_state.messages.append({"role": "assistant", "content": full_response})
+            st.session_state.langchain_history.append(HumanMessage(content=prompt))
+            st.session_state.langchain_history.append(AIMessage(content=full_response))
             
         except Exception as e:
             import traceback
             st.error(f"Error: {str(e)}")
             st.code(traceback.format_exc())
-            st.info("Check if your GROQ_API_KEY is correct in the .env file and ensure all langchain packages are installed correctly.")
+            st.info("Check if your GROQ_API_KEY is correct in the .env file.")
