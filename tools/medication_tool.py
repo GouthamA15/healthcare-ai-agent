@@ -8,7 +8,6 @@ INTERACTIONS = {
     "simvastatin": ["grapefruit juice", "erythromycin", "itraconazole"]
 }
 
-# Simple static database (can upgrade later)
 MEDICATION_DB = {
     "paracetamol": {
         "use": "Used to treat fever and mild to moderate pain.",
@@ -27,7 +26,7 @@ MEDICATION_DB = {
     }
 }
 
-@tool
+@tool(description="Check for potential interactions between two drugs.")
 def check_drug_interaction(drug1: str, drug2: str) -> str:
     drug1, drug2 = drug1.lower().strip(), drug2.lower().strip()
     
@@ -38,7 +37,7 @@ def check_drug_interaction(drug1: str, drug2: str) -> str:
         
     return f"No common interaction found between {drug1} and {drug2} in our simple database. Always verify with a healthcare professional."
 
-@tool
+@tool(description="Get general information about a specific medication.")
 def get_medication_info(med_name: str) -> str:
     med_database = {
         "metformin": "A medication for type 2 diabetes that helps control blood sugar levels.",
@@ -50,13 +49,8 @@ def get_medication_info(med_name: str) -> str:
     med_name = med_name.lower().strip()
     return med_database.get(med_name, "Medication not found in simple database. Use the medical knowledge tool for more details.")
 
-@tool
+@tool(description="Get medication info including usage, dosage, and warnings from a query.")
 def medication_tool(query: str) -> str:
-    """
-    Use this tool to get basic information about medications,
-    including usage, dosage, and warnings.
-    """
-
     query = query.lower()
 
     for med in MEDICATION_DB:
