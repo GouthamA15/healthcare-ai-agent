@@ -13,7 +13,7 @@ class SimpleHealthAgent:
     def __init__(self):
         GROQ_KEY = os.environ.get('GROQ_API_KEY')
         self.llm = ChatGroq(
-            model="llama-3.1-8b-instant",
+            model="llama-3.3-70b-versatile",
             api_key=GROQ_KEY,
             temperature=0,
         )
@@ -29,10 +29,13 @@ class SimpleHealthAgent:
         self.tools_dict = {t.name: t for t in self.tools_list}
         self.llm_with_tools = self.llm.bind_tools(self.tools_list)
         
-        self.system_prompt = """You are a helpful AI Health Assistant. 
-        - If a user has a medical emergency, tell them to call 911 immediately.
-        - Use the provided tools to answer questions.
-        - Always include a medical disclaimer."""
+        self.system_prompt = (
+            "You are a helpful AI Health Assistant.\n"
+            "- If a user has a medical emergency, tell them to call 911 immediately.\n"
+            "- ALWAYS use the provided tools to answer questions when applicable.\n"
+            "- When a tool returns information, you MUST include that information in your final answer to the user.\n"
+            "- ALWAYS include a medical disclaimer at the end of your response."
+        )
 
     def invoke(self, input_data):
         user_input = input_data["input"]
