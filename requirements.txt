@@ -1,6 +1,9 @@
 # Langchain Libraries
 langchain
 langchain-community
+langchain-huggingface
+langchain-chroma
+huggingface_hub
 langchain-core
 langchain-groq
 
