@@ -12,7 +12,7 @@ This is a **Healthcare Monitoring AI Agent** designed to provide a digital healt
   - **Data Source:** Medical PDFs in the `data/` folder.
 - **Tools:** 
   - `fitness_tool.py`: BMI and BMR calculations.
-  - `medical_info_tool.py`: RAG-based knowledge retrieval.
+  - `medical_tool.py`: RAG-based knowledge retrieval.
   - `medication_tool.py`: Drug interaction checks and general drug info.
 - **Frontend:** Streamlit dashboard in `ui/streamlit_app.py`.
 

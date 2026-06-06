@@ -3,9 +3,9 @@ from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 
-from tools.fitness_tool import calculate_bmi, calculate_bmr
-from tools.medical_info_tool import get_medical_knowledge
-from tools.medication_tool import check_drug_interaction, get_medication_info
+from tools.fitness_tool import calculate_bmi, calculate_bmr, fitness_tool
+from tools.medical_tool import medical_info_tool
+from tools.medication_tool import check_drug_interaction, get_medication_info, medication_tool
 
 load_dotenv()
 
@@ -20,9 +20,11 @@ class SimpleHealthAgent:
         self.tools_list = [
             calculate_bmi, 
             calculate_bmr, 
-            get_medical_knowledge, 
+            fitness_tool,
+            medical_info_tool, 
             check_drug_interaction, 
-            get_medication_info
+            get_medication_info,
+            medication_tool
         ]
         self.tools_dict = {t.name: t for t in self.tools_list}
         self.llm_with_tools = self.llm.bind_tools(self.tools_list)
