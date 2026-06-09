@@ -4,18 +4,14 @@
 This is a **Healthcare Monitoring AI Agent** designed to provide a digital health assistant through a conversational interface. It uses **Retrieval-Augmented Generation (RAG)** to provide grounded answers from medical documents and a suite of custom tools for health calculations and medication safety.
 
 ### Core Architecture
+- **Frontend:** React (TypeScript) with Vite (`frontend/`). Supports toggleable Dark Mode (default).
+- **Backend:** FastAPI (`backend/app.py`) serving the agent logic.
 - **Agent:** Custom `SimpleHealthAgent` in `agents/health_agent.py` using `langchain-groq`.
-- **LLM:** Groq-hosted `llama-3.3-70b-versatile` (Primary for robust tool calling).
-- **Conversational Memory:** Agent maintains context of the last 10 messages for follow-up queries.
+- **LLM:** Groq-hosted `llama-3.3-70b-versatile`.
 - **RAG System:** 
   - **Vector DB:** ChromaDB (`vectorstore/chroma_db`).
-  - **Embeddings:** HuggingFace `sentence-transformers/all-MiniLM-L6-v2` (running locally).
-  - **Data Source:** Medical PDFs in the `data/` folder.
-- **Tools:** 
-  - `fitness_tool.py`: BMI, BMR calculations and query-based fitness assessment.
-  - `medical_tool.py`: RAG-based knowledge retrieval (uses `rag_chain.py`).
-  - `medication_tool.py`: Drug interaction checks and general drug info.
-- **Frontend:** Streamlit dashboard in `ui/streamlit_app.py`.
+  - **Embeddings:** HuggingFace `sentence-transformers/all-MiniLM-L6-v2`.
+- **Tools:** `fitness_tool.py`, `medical_tool.py`, `medication_tool.py`.
 
 ---
 
@@ -23,26 +19,22 @@ This is a **Healthcare Monitoring AI Agent** designed to provide a digital healt
 
 ### Prerequisites
 - Python 3.13+
+- Node.js & npm
 - Groq API Key (stored in `.env`)
 
 ### Key Commands
-- **Install Dependencies:**
+- **Run Backend:**
   ```powershell
-  python -m pip install -r requirements.txt
+  python backend/app.py
   ```
-- **Run Streamlit UI:**
+- **Run Frontend:**
   ```powershell
-  python -m streamlit run ui/streamlit_app.py
+  cd frontend
+  npm run dev
   ```
 - **Ingest New Documents:**
   ```powershell
   python vectorstore/vector_store.py
-  ```
-- **Test Components:**
-  ```powershell
-  python test_medical_tool.py
-  python test_fitness_tool.py
-  python test_medication_tool.py
   ```
 
 ---
@@ -58,12 +50,15 @@ This is a **Healthcare Monitoring AI Agent** designed to provide a digital healt
 
 ### Project Structure
 - `agents/`: Contains the agent logic (`health_agent.py`) and RAG pipeline (`rag_chain.py`).
+- `backend/`: FastAPI server implementation (`app.py`).
+- `frontend/`: React + TypeScript frontend application.
 - `tools/`: Atomic functions decorated with `@tool` for the agent to consume.
-- `ui/`: Streamlit components.
 - `vectorstore/`: Logic for document loading, splitting, and vector storage.
 - `data/`: Placeholder for medical PDFs.
 
 ### Tech Stack Decisions
+- **FastAPI:** High-performance backend for serving the AI agent.
+- **React:** Interactive and responsive frontend for the chat interface.
 - **Groq:** Chosen for ultra-fast inference speed. `llama-3.3-70b-versatile` is used for its superior tool-calling accuracy.
 - **Local Embeddings:** Used to maintain data privacy and reduce API costs.
 - **ChromaDB:** Local vector database (ignored by git to keep repo clean).
@@ -73,4 +68,4 @@ This is a **Healthcare Monitoring AI Agent** designed to provide a digital healt
 ## Contextual Warnings
 - **Tool Descriptions:** Do NOT use docstrings for tool descriptions; use the `description` parameter in the `@tool` decorator to stay compliant with the Clean Code Policy.
 - **Python Version:** Running on Python 3.13.
-- **State Management:** Session history is managed by the UI layer (Streamlit) and passed to the agent's `invoke` method.
+- **State Management:** Session history is managed by the frontend (React) and passed to the backend API.

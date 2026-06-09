@@ -17,8 +17,13 @@ torch
 pypdf
 tiktoken
 
-# Streamlit UI
-streamlit
+# Backend Framework
+fastapi
+uvicorn
+python-dotenv
+pydantic
+requests
+httpx
 
 # SQLite
 sqlalchemy
